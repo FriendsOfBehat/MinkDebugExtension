@@ -1,0 +1,35 @@
+default:
+    suites:
+        default:
+            contexts:
+                - Behat\MinkExtension\Context\MinkContext
+
+    extensions:
+        Lakion\Behat\MinkDebugExtension:
+            directory: %directory%
+            clean_start: %clean_start%
+        Behat\MinkExtension:
+            sessions:
+                default:
+                    goutte: ~
+
+    gherkin:
+        filters:
+            tags: "~@javascript"
+
+javascript:
+    extensions:
+        Lakion\Behat\MinkDebugExtension:
+            directory: %directory%
+            screenshot: %screenshot%
+            clean_start: %clean_start%
+        Behat\MinkExtension:
+            sessions:
+                javascript:
+                    selenium2: ~
+            browser_name: firefox
+            show_auto: false
+
+    gherkin:
+        filters:
+            tags: "@javascript"

@@ -1,0 +1,7 @@
+/vendor/
+/bin/
+
+behat.yml
+
+/test-application/logs/*
+!/test-application/logs/.gitkeep

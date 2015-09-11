@@ -1,0 +1,43 @@
+{
+    "name": "lakion/mink-debug-extension",
+    "type": "behat-extension",
+    "description": "Debug extension for Behat",
+    "keywords": ["debug", "behat", "mink", "logging"],
+    "homepage": "https://github.com/Lakion/MinkDebugExtension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name":     "Kamil Kokot",
+            "homepage": "http://kamil.kokot.me"
+        }
+    ],
+    "require": {
+        "php":                  ">=5.5.9",
+        "behat/behat":          "^3.0.5",
+        "behat/mink-extension": "^2.0.1",
+        "symfony/config":       "^2.2"
+    },
+    "require-dev": {
+        "phpspec/phpspec":             "^2.0",
+        "behat/mink-goutte-driver":    "^1.1",
+        "behat/mink-selenium2-driver": "^1.2"
+    },
+    "suggests": {
+        "behat/mink-browserkit-driver": "To get request debug information included in log file",
+        "behat/mink-selenium2-driver": "To get screenshots"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": { "Lakion\\Behat\\MinkDebugExtension\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Lakion\\Behat\\MinkDebugExtension\\spec\\": "spec/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
