@@ -19,7 +19,7 @@ before_install:
 
 before_script:
   - composer install --prefer-source
-  - travis/wait-for-port 4444
+  - travis/tools/wait-for-port 4444
 
 script:
   - bin/phpspec run -f pretty
