@@ -20,7 +20,7 @@ Assuming you already have Composer:
 composer require lakion/mink-debug-extension
 ```
 
-Then you only need to configure you Behat profile:
+Then you only need to configure your Behat profile:
 
 ```yml
 default:
