@@ -3,8 +3,8 @@
 sh -e /etc/init.d/xvfb start
 export DISPLAY=:99
 
-if [ ! -f $HOME/.mink-log-cache/selenium.jar ]; then
-    curl -s http://selenium-release.storage.googleapis.com/2.47/selenium-server-standalone-2.47.1.jar > $HOME/.mink-log-cache/selenium.jar
+if [ ! -f "$MINK_DEBUG_CACHE_DIR/selenium.jar" ]; then
+    curl -s http://selenium-release.storage.googleapis.com/2.47/selenium-server-standalone-2.47.1.jar > "$MINK_DEBUG_CACHE_DIR/selenium.jar"
 fi
 
-java -jar $HOME/.mink-log-cache/selenium.jar > /dev/null 2>&1 &
+java -jar "$MINK_DEBUG_CACHE_DIR/selenium.jar" > /dev/null 2>&1 &

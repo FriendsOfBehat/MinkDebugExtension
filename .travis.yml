@@ -1,11 +1,15 @@
 language: php
 
+env:
+  global:
+    - MINK_DEBUG_CACHE_DIR=$HOME/.mink-debug-cache
+
 cache:
   directories:
     - bin
     - vendor
     - $HOME/.composer/cache
-    - $HOME/.mink-log-cache
+    - $MINK_DEBUG_CACHE_DIR
 
 php:
   - 7.0
@@ -14,7 +18,7 @@ php:
   - hhvm
 
 before_install:
-  - mkdir -p $HOME/.mink-log-cache
+  - mkdir -p $MINK_DEBUG_CACHE_DIR
   - travis/run-selenium
 
 before_script:
