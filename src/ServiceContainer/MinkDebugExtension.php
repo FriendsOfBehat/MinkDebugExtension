@@ -83,7 +83,6 @@ class MinkDebugExtension implements ExtensionInterface
             new Reference('mink'),
             '%mink_debug.directory%',
             '%mink_debug.screenshot%',
-            '%mink_debug.clean_start%',
         ]);
 
         $definition->addTag(EventDispatcherExtension::SUBSCRIBER_TAG, ['priority' => 0]);
