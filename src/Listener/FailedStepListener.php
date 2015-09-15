@@ -42,11 +42,6 @@ class FailedStepListener implements EventSubscriberInterface
     private $screenshot;
 
     /**
-     * @var boolean
-     */
-    private $cleanStart;
-
-    /**
      * Used to ensure that screenshot and log comes from the same failed step.
      *
      * @var string
@@ -57,14 +52,12 @@ class FailedStepListener implements EventSubscriberInterface
      * @param Mink $mink
      * @param string $logDirectory
      * @param boolean $screenshot
-     * @param boolean $cleanStart
      */
-    public function __construct(Mink $mink, $logDirectory, $screenshot, $cleanStart)
+    public function __construct(Mink $mink, $logDirectory, $screenshot)
     {
         $this->mink = $mink;
         $this->logDirectory = $logDirectory;
         $this->screenshot = $screenshot;
-        $this->cleanStart = $cleanStart;
     }
 
     /**
