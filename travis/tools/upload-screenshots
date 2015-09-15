@@ -16,7 +16,7 @@ fi
 
 echo "Uploading screenshots..."
 
-for image in "$1"
+for image in $1
 do
     if [ ! -e "$image" ]
     then
