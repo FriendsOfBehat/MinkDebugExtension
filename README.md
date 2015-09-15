@@ -47,38 +47,38 @@ MinkDebugExtension comes with three tiny, but powerful scripts:
 
 #### Uploading textfiles
 
-`vendor/lakion/mink-debug-extension/travis/tools/upload-textfiles "<glob_path>"` - uploades file contents to [termbin.com](http://termbin.com) and returns a list of file names and urls to uploaded content. 
+`vendor/lakion/mink-debug-extension/scripts/upload-textfiles "<glob_path>"` - uploades file contents to [termbin.com](http://termbin.com) and returns a list of file names and urls to uploaded content. 
 
 Glob paths must be quoted to work correctly. Usage:
   
 ```bash
-$ vendor/lakion/mink-debug-extension/travis/tools/upload-textfiles "logs/*.log"
-$ vendor/lakion/mink-debug-extension/travis/tools/upload-textfiles README.md
+$ vendor/lakion/mink-debug-extension/scripts/upload-textfiles "logs/*.log"
+$ vendor/lakion/mink-debug-extension/scripts/upload-textfiles README.md
 ```
 
 #### Uploading screenshots
   
-`vendor/lakion/mink-debug-extension/travis/tools/upload-screenshots "<glob_path>"` - uploades images to [imgur.com](http://imgur.com) and returns a list of file names and theirs urls. 
+`vendor/lakion/mink-debug-extension/scripts/upload-screenshots "<glob_path>"` - uploades images to [imgur.com](http://imgur.com) and returns a list of file names and theirs urls. 
 
 Glob paths must be quoted to work correctly. Requires Imgur API key to be set as environmental varialbe `$IMGUR_API_KEY`. Usage:
 
 ```bash
 $ export IMGUR_API_KEY="imgur api key"
 
-$ vendor/lakion/mink-debug-extension/travis/tools/upload-screenshots "logs/*.png"
-$ vendor/lakion/mink-debug-extension/travis/tools/upload-screenshots favicon.ico
+$ vendor/lakion/mink-debug-extension/scripts/upload-screenshots "logs/*.png"
+$ vendor/lakion/mink-debug-extension/scripts/upload-screenshots favicon.ico
 ```
 
 #### Waiting for port to be taken
 
-`vendor/lakion/mink-debug-extension/travis/tools/wait-for-port <port> [limit = 15] [interval = 1]` - waits for service to appear at localhost at a given port, useful while waiting for Selenium or webserver to warm up.
+`vendor/lakion/mink-debug-extension/scripts/wait-for-port <port> [limit = 15] [interval = 1]` - waits for service to appear at localhost at a given port, useful while waiting for Selenium or webserver to warm up.
 
 Limit is the number of tries, interval is the delay in seconds between another tries. Usage:
 
 ```bash
 $ java -jar selenium.jar &
 
-$ vendor/lakion/mink-debug-extension/travis/tools/wait-for-port 4444
+$ vendor/lakion/mink-debug-extension/scripts/wait-for-port 4444
 ```
   
 Testing
