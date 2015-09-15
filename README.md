@@ -47,23 +47,25 @@ MinkDebugExtension comes with three tiny, but powerful scripts:
 
 #### Uploading textfiles
 
-`vendor/lakion/mink-debug-extension/travis/tools/upload-textfiles <glob_path>` - uploades file contents to [termbin.com](http://termbin.com) and returns a list of file names and urls to uploaded content. Usage:
+`vendor/lakion/mink-debug-extension/travis/tools/upload-textfiles "<glob_path>"` - uploades file contents to [termbin.com](http://termbin.com) and returns a list of file names and urls to uploaded content. 
+
+Glob paths must be quoted to work correctly. Usage:
   
 ```bash
-$ vendor/lakion/mink-debug-extension/travis/tools/upload-textfiles logs/*.log
+$ vendor/lakion/mink-debug-extension/travis/tools/upload-textfiles "logs/*.log"
 $ vendor/lakion/mink-debug-extension/travis/tools/upload-textfiles README.md
 ```
 
 #### Uploading screenshots
   
-`vendor/lakion/mink-debug-extension/travis/tools/upload-screenshots <glob_path>` - uploades images to [imgur.com](http://imgur.com) and returns a list of file names and urls to them.
-  
-Requires Imgur API key to be set as environmental varialbe `$IMGUR_API_KEY`. Usage:
+`vendor/lakion/mink-debug-extension/travis/tools/upload-screenshots "<glob_path>"` - uploades images to [imgur.com](http://imgur.com) and returns a list of file names and theirs urls. 
+
+Glob paths must be quoted to work correctly. Requires Imgur API key to be set as environmental varialbe `$IMGUR_API_KEY`. Usage:
 
 ```bash
 $ export IMGUR_API_KEY="imgur api key"
 
-$ vendor/lakion/mink-debug-extension/travis/tools/upload-screenshots logs/*.png
+$ vendor/lakion/mink-debug-extension/travis/tools/upload-screenshots "logs/*.png"
 $ vendor/lakion/mink-debug-extension/travis/tools/upload-screenshots favicon.ico
 ```
 

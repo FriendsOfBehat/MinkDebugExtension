@@ -8,7 +8,7 @@ fi
 
 echo "Uploading logs..."
 
-for file in "$1"
+for file in $1
 do
     if [ ! -e "$file" ]
     then
