@@ -20,6 +20,8 @@ else
     INTERVAL=1
 fi
 
+echo "Waiting for localhost:$1... [times = $COUNTER, interval = $INTERVAL]"
+
 while [ $COUNTER -gt 0 ]
 do
     if [ `echo | telnet localhost $1 2>&1 | grep 'Connection refused' | wc -l` == 0 ]
