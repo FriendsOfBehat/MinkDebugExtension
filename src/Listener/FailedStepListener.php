@@ -97,7 +97,7 @@ class FailedStepListener implements EventSubscriberInterface
     {
         $session = $this->getSession();
 
-        $log = sprintf('Current page: %d %s', $this->getStatusCode(), $session->getCurrentUrl()) . "\n";
+        $log = sprintf('Current page: %d %s', $this->getStatusCode($session), $this->getCurrentUrl($session)) . "\n";
         $log .= $this->getRequestDataLogMessage($session);
         $log .= $this->getResponseHeadersLogMessage($session);
         $log .= $this->getRequestContentLogMessage($session);
@@ -152,14 +152,28 @@ class FailedStepListener implements EventSubscriberInterface
     }
 
     /**
-     * @param string|null $sessionName
+     * @param Session $session
      *
      * @return int|null
      */
-    private function getStatusCode($sessionName = null)
+    private function getStatusCode(Session $session)
     {
         try {
-            return $this->getSession($sessionName)->getStatusCode();
+            return $session->getStatusCode();
+        } catch (MinkException $exception) {
+            return null;
+        }
+    }
+
+    /**
+     * @param Session $session
+     *
+     * @return string|null
+     */
+    private function getCurrentUrl(Session $session)
+    {
+        try {
+            return $session->getCurrentUrl();
         } catch (MinkException $exception) {
             return null;
         }
