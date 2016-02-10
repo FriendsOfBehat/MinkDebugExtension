@@ -8,7 +8,6 @@ cache:
   directories:
     - bin
     - vendor
-    - $HOME/.composer/cache
     - $MINK_DEBUG_CACHE_DIR
 
 php:
@@ -18,6 +17,7 @@ php:
   - hhvm
 
 before_install:
+  - phpenv config-rm xdebug.ini || true
   - mkdir -p $MINK_DEBUG_CACHE_DIR
   - travis/run-selenium
 
