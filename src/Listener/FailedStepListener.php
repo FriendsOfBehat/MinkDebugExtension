@@ -13,7 +13,6 @@ namespace Lakion\Behat\MinkDebugExtension\Listener;
 
 use Behat\Behat\EventDispatcher\Event\AfterStepTested;
 use Behat\Behat\EventDispatcher\Event\StepTested;
-use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\Exception as MinkException;
 use Behat\Mink\Mink;
@@ -37,7 +36,7 @@ class FailedStepListener implements EventSubscriberInterface
     private $logDirectory;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $screenshot;
 
@@ -98,9 +97,8 @@ class FailedStepListener implements EventSubscriberInterface
         $session = $this->getSession();
 
         $log = sprintf('Current page: %d %s', $this->getStatusCode($session), $this->getCurrentUrl($session)) . "\n";
-        $log .= $this->getRequestDataLogMessage($session);
         $log .= $this->getResponseHeadersLogMessage($session);
-        $log .= $this->getRequestContentLogMessage($session);
+        $log .= $this->getResponseContentLogMessage($session);
 
         $this->saveLog($log, 'log');
     }
@@ -142,7 +140,7 @@ class FailedStepListener implements EventSubscriberInterface
     /**
      * @param string|null $name
      *
-     * @return boolean
+     * @return bool
      */
     private function hasEligibleMinkSession($name = null)
     {
@@ -184,25 +182,6 @@ class FailedStepListener implements EventSubscriberInterface
      *
      * @return string|null
      */
-    private function getRequestDataLogMessage(Session $session)
-    {
-        $driver = $session->getDriver();
-        if (!$driver instanceof BrowserKitDriver) {
-            return null;
-        }
-
-        try {
-            return 'Request:' . "\n" . print_r($driver->getClient()->getRequest(), true) . "\n";
-        } catch (MinkException $exception) {
-            return null;
-        }
-    }
-
-    /**
-     * @param Session $session
-     *
-     * @return string|null
-     */
     private function getResponseHeadersLogMessage(Session $session)
     {
         try {
@@ -217,7 +196,7 @@ class FailedStepListener implements EventSubscriberInterface
      *
      * @return string|null
      */
-    private function getRequestContentLogMessage(Session $session)
+    private function getResponseContentLogMessage(Session $session)
     {
         try {
             return 'Response content:' . "\n" . $session->getPage()->getContent() . "\n";
