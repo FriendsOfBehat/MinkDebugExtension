@@ -36,7 +36,7 @@ Configuration reference
 
 Under `Lakion\Behat\MinkDebugExtension` there are three options to be configured:
 
-  - `directory` (required to enable extension) - contains path to directory that will contain generated logs, it can be relative to directory where your `behat.yml` is
+  - `directory` (required to enable extension) - contains path to directory that will contain generated logs. Use the variable `%paths.base%` to refer to the directory where your `behat.yml` is
   - `screenshot` (default `false`) - whether to save screenshots if using `Selenium2Driver`
   - `clean_start` (default `true`) - whether to clean your existing logs on each Behat execution
   
