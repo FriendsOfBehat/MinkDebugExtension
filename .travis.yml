@@ -1,30 +1,39 @@
 language: php
 
+php:
+    - 7.0
+    - 5.6
+    - 5.5
+    - hhvm
+
 env:
-  global:
-    - MINK_DEBUG_CACHE_DIR=$HOME/.mink-debug-cache
+    global:
+        - MINK_DEBUG_CACHE_DIR=$HOME/.mink-debug-cache
 
 cache:
-  directories:
-    - bin
-    - vendor
-    - $MINK_DEBUG_CACHE_DIR
-
-php:
-  - 7.0
-  - 5.6
-  - 5.5
-  - hhvm
+    directories:
+        - bin
+        - vendor
+        - $MINK_DEBUG_CACHE_DIR
 
 before_install:
-  - phpenv config-rm xdebug.ini || true
-  - mkdir -p $MINK_DEBUG_CACHE_DIR
-  - travis/run-selenium
+    - phpenv config-rm xdebug.ini || true
+
+    - mkdir -p $MINK_DEBUG_CACHE_DIR
+
+    - composer config -g github-oauth.github.com 4dbe1c08562d7937c7013596615b1675210f3983
+    - composer self-update
+
+install:
+    - travis/run-selenium
 
 before_script:
-  - composer install --prefer-source
-  - travis/tools/wait-for-port 4444
+    - composer install --prefer-dist
+
+    - travis/tools/wait-for-port 4444
 
 script:
-  - bin/phpspec run -f pretty
-  - bin/behat --strict -f progress
+    - composer validate --strict
+
+    - bin/phpspec run
+    - bin/behat --strict || bin/behat --strict --rerun
