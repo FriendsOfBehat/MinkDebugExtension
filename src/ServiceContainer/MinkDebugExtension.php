@@ -46,7 +46,7 @@ class MinkDebugExtension implements ExtensionInterface
     {
         $builder
             ->children()
-                ->scalarNode('directory')->defaultNull()->end()
+                ->scalarNode('directory')->isRequired()->end()
                 ->booleanNode('screenshot')->defaultFalse()->end()
                 ->booleanNode('clean_start')->defaultTrue()->end()
             ->end();
@@ -96,7 +96,8 @@ class MinkDebugExtension implements ExtensionInterface
     private function removeAllExistingLogsIfRequested(array $config)
     {
         if ($config['clean_start']) {
-            array_map('unlink', glob($config['directory'] . '/*'));
+            array_map('unlink', glob($config['directory'] . '/*.log'));
+            array_map('unlink', glob($config['directory'] . '/*.png'));
         }
     }
 }
