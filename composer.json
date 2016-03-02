@@ -8,6 +8,7 @@
     "authors": [
         {
             "name": "Kamil Kokot",
+            "email": "kamil@kokot.me",
             "homepage": "http://kamil.kokot.me"
         }
     ],
@@ -29,15 +30,15 @@
     "config": {
         "bin-dir": "bin"
     },
+    "bin": [
+        "travis/tools/upload-screenshots",
+        "travis/tools/upload-textfiles",
+        "travis/tools/wait-for-port"
+    ],
     "autoload": {
         "psr-4": { "Lakion\\Behat\\MinkDebugExtension\\": "src/" }
     },
     "autoload-dev": {
         "psr-4": { "Lakion\\Behat\\MinkDebugExtension\\spec\\": "spec/" }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        }
     }
 }
