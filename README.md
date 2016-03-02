@@ -43,42 +43,43 @@ Under `Lakion\Behat\MinkDebugExtension` there are three options to be configured
 Scripts
 -------
 
-MinkDebugExtension comes with three tiny, but powerful scripts:
+MinkDebugExtension comes with three tiny, but powerful scripts. They will be installed to your [`config.bin-dir` directory](https://getcomposer.org/doc/articles/vendor-binaries.md#can-vendor-binaries-be-installed-somewhere-other-than-vendor-bin-),
+which is `vendor/bin` by default.
 
 #### Uploading textfiles
 
-`vendor/lakion/mink-debug-extension/travis/tools/upload-textfiles "<glob_path>"` - uploades file contents to [termbin.com](http://termbin.com) and returns a list of file names and urls to uploaded content. 
+`vendor/bin/upload-textfiles "<glob_path>"` - uploades file contents to [termbin.com](http://termbin.com) and returns a list of file names and urls to uploaded content. 
 
 Glob paths must be quoted to work correctly. Usage:
   
 ```bash
-$ vendor/lakion/mink-debug-extension/travis/tools/upload-textfiles "logs/*.log"
-$ vendor/lakion/mink-debug-extension/travis/tools/upload-textfiles README.md
+$ vendor/bin/upload-textfiles "logs/*.log"
+$ vendor/bin/upload-textfiles README.md
 ```
 
 #### Uploading screenshots
   
-`vendor/lakion/mink-debug-extension/travis/tools/upload-screenshots "<glob_path>"` - uploades images to [imgur.com](http://imgur.com) and returns a list of file names and theirs urls. 
+`vendor/bin/upload-screenshots "<glob_path>"` - uploades images to [imgur.com](http://imgur.com) and returns a list of file names and theirs urls. 
 
 Glob paths must be quoted to work correctly. Requires Imgur API key to be set as environmental varialbe `$IMGUR_API_KEY`. Usage:
 
 ```bash
 $ export IMGUR_API_KEY="imgur api key"
 
-$ vendor/lakion/mink-debug-extension/travis/tools/upload-screenshots "logs/*.png"
-$ vendor/lakion/mink-debug-extension/travis/tools/upload-screenshots favicon.ico
+$ vendor/bin/upload-screenshots "logs/*.png"
+$ vendor/bin/upload-screenshots favicon.ico
 ```
 
 #### Waiting for port to be taken
 
-`vendor/lakion/mink-debug-extension/travis/tools/wait-for-port <port> [limit = 15] [interval = 1]` - waits for service to appear at localhost at a given port, useful while waiting for Selenium or webserver to warm up.
+`vendor/bin/wait-for-port <port> [limit = 15] [interval = 1]` - waits for service to appear at localhost at a given port, useful while waiting for Selenium or webserver to warm up.
 
 Limit is the number of tries, interval is the delay in seconds between another tries. Usage:
 
 ```bash
 $ java -jar selenium.jar &
 
-$ vendor/lakion/mink-debug-extension/travis/tools/wait-for-port 4444
+$ vendor/bin/wait-for-port 4444
 ```
   
 Testing
