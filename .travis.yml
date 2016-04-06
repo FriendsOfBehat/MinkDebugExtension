@@ -21,15 +21,14 @@ before_install:
 
     - mkdir -p $MINK_DEBUG_CACHE_DIR
 
-    - composer config -g github-oauth.github.com 4dbe1c08562d7937c7013596615b1675210f3983
     - composer self-update
 
 install:
+    - composer install --prefer-dist
+
     - travis/run-selenium
 
 before_script:
-    - composer install --prefer-dist
-
     - travis/tools/wait-for-port 4444
 
 script:
