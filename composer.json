@@ -16,7 +16,7 @@
         "php": "^5.5.9|^7.0",
         "behat/behat": "^3.0.5",
         "behat/mink-extension": "^2.0.1",
-        "symfony/config": "^2.2"
+        "symfony/config": "^3"
     },
     "require-dev": {
         "phpspec/phpspec": "^2.0",
