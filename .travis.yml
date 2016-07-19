@@ -1,5 +1,7 @@
 language: php
 
+sudo: false
+
 php:
     - 7.0
     - 5.6
@@ -9,10 +11,15 @@ php:
 env:
     global:
         - MINK_DEBUG_CACHE_DIR=$HOME/.mink-debug-cache
+        - COMPOSER_OPTIONS=""
+
+matrix:
+    include:
+        - php: 5.5
+          env: COMPOSER_OPTIONS="--prefer-lowest"
 
 cache:
     directories:
-        - bin
         - vendor
         - $MINK_DEBUG_CACHE_DIR
 
@@ -24,7 +31,7 @@ before_install:
     - composer self-update
 
 install:
-    - composer install --prefer-dist
+    - composer update --prefer-dist $COMPOSER_OPTIONS
 
     - travis/run-selenium
 
@@ -34,5 +41,5 @@ before_script:
 script:
     - composer validate --strict
 
-    - bin/phpspec run
-    - bin/behat --strict || bin/behat --strict --rerun
+    - vendor/bin/phpspec run
+    - vendor/bin/behat --strict || vendor/bin/behat --strict --rerun
