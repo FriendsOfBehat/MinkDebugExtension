@@ -61,7 +61,7 @@ $ vendor/bin/upload-textfiles README.md
   
 `vendor/bin/upload-screenshots "<glob_path>"` - uploades images to [imgur.com](http://imgur.com) and returns a list of file names and theirs urls. 
 
-Glob paths must be quoted to work correctly. Requires Imgur API key to be set as environmental varialbe `$IMGUR_API_KEY`. Usage:
+Glob paths must be quoted to work correctly. Requires Imgur API key to be set as environmental variable `$IMGUR_API_KEY`. Usage:
 
 ```bash
 $ export IMGUR_API_KEY="imgur api key"
