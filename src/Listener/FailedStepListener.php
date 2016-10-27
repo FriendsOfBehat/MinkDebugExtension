@@ -19,6 +19,7 @@ use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Behat\Testwork\Tester\Result\TestResult;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use WebDriver\Exception as WebDriverException;
 
 /**
  * @author Kamil Kokot <kamil.kokot@lakion.com>
@@ -111,7 +112,9 @@ class FailedStepListener implements EventSubscriberInterface
             return;
         }
 
-        $this->saveLog($session->getScreenshot(), 'png');
+        try {
+            $this->saveLog($session->getScreenshot(), 'png');
+        } catch (WebDriverException $exception) {}
     }
 
     /**
@@ -160,6 +163,8 @@ class FailedStepListener implements EventSubscriberInterface
             return $session->getStatusCode();
         } catch (MinkException $exception) {
             return null;
+        } catch (WebDriverException $exception) {
+            return null;
         }
     }
 
@@ -173,6 +178,8 @@ class FailedStepListener implements EventSubscriberInterface
         try {
             return $session->getCurrentUrl();
         } catch (MinkException $exception) {
+            return null;
+        } catch (WebDriverException $exception) {
             return null;
         }
     }
@@ -188,6 +195,8 @@ class FailedStepListener implements EventSubscriberInterface
             return 'Response headers:' . "\n" . print_r($session->getResponseHeaders(), true) . "\n";
         } catch (MinkException $exception) {
             return null;
+        } catch (WebDriverException $exception) {
+            return null;
         }
     }
 
@@ -201,6 +210,8 @@ class FailedStepListener implements EventSubscriberInterface
         try {
             return 'Response content:' . "\n" . $session->getPage()->getContent() . "\n";
         } catch (MinkException $exception) {
+            return null;
+        } catch (WebDriverException $exception) {
             return null;
         }
     }
