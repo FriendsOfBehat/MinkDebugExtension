@@ -125,7 +125,7 @@ class FailedStepListener implements EventSubscriberInterface
     {
         $path = sprintf("%s/behat-%s.%s", $this->logDirectory, $this->currentDateAsString, $type);
 
-        if (!file_put_contents($path, $content)) {
+        if (is_bool(file_put_contents($path, $content))) {
             throw new \RuntimeException(sprintf('Failed while trying to write log in "%s".', $path));
         }
     }
