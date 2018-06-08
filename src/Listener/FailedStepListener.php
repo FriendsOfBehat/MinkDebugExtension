@@ -18,6 +18,7 @@ use Behat\Mink\Exception\Exception as MinkException;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Behat\Testwork\Tester\Result\TestResult;
+use DMore\ChromeDriver\ChromeDriver;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use WebDriver\Exception as WebDriverException;
 
@@ -108,13 +109,11 @@ class FailedStepListener implements EventSubscriberInterface
     {
         $session = $this->getSession();
 
-        if (!$session->getDriver() instanceof Selenium2Driver) {
-            return;
+        if ($session->getDriver() instanceof Selenium2Driver || $session->getDriver() instanceof ChromeDriver) {
+            try {
+                $this->saveLog($session->getScreenshot(), 'png');
+            } catch (WebDriverException $exception) {}
         }
-
-        try {
-            $this->saveLog($session->getScreenshot(), 'png');
-        } catch (WebDriverException $exception) {}
     }
 
     /**

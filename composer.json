@@ -20,11 +20,13 @@
     "require-dev": {
         "phpspec/phpspec": "^2.0",
         "behat/mink-goutte-driver": "^1.1",
-        "behat/mink-selenium2-driver": "^1.2"
+        "behat/mink-selenium2-driver": "^1.2",
+        "dmore/chrome-mink-driver": "^2.6"
     },
     "suggest": {
         "behat/mink-browserkit-driver": "To get request debug information included in log file",
-        "behat/mink-selenium2-driver": "To get screenshots"
+        "behat/mink-selenium2-driver": "A driver supporting screenshots",
+        "dmore/chrome-mink-driver": "Another, faster, driver supporting screenshots"
     },
     "bin": [
         "travis/tools/upload-screenshots",
