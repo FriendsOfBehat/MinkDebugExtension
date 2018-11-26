@@ -40,6 +40,6 @@ before_script:
 
 script:
     - composer validate --strict
-
     - vendor/bin/phpspec run
-    - vendor/bin/behat --strict || vendor/bin/behat --strict --rerun
+    - vendor/bin/behat --strict -vv || vendor/bin/behat --strict --rerun
+    - ls -lah test-application/logs
