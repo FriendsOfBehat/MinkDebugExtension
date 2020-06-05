@@ -13,9 +13,8 @@ namespace Lakion\Behat\MinkDebugExtension\Listener;
 
 use Behat\Behat\EventDispatcher\Event\AfterStepTested;
 use Behat\Behat\EventDispatcher\Event\StepTested;
-use Behat\Mink\Driver\PantherDriver;
-use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\Exception as MinkException;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Behat\Testwork\Tester\Result\TestResult;
@@ -108,14 +107,10 @@ class FailedStepListener implements EventSubscriberInterface
     private function logScreenshot()
     {
         $session = $this->getSession();
-        $driver = $session->getDriver();
-
-        if (!$driver instanceof Selenium2Driver && !$driver instanceof PantherDriver) {
-            return;
-        }
 
         try {
             $this->saveLog($session->getScreenshot(), 'png');
+        } catch (UnsupportedDriverActionException $unsupportedDriverActionException) {
         } catch (WebDriverException $exception) {}
     }
 
