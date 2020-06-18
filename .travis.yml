@@ -53,18 +53,19 @@ before_script:
 
     # Run ChromeDriver
     - $MINK_DEBUG_CACHE_DIR/chromedriver > $MINK_DEBUG_CACHE_DIR/chromedriver.log 2>&1 &
-    - echo -e "Chromedriver was started in the background!\n"
+    - echo "Chromedriver was started in the background!"
 
     # Download and configure Selenium
     - |
       if [ ! -f "$MINK_DEBUG_CACHE_DIR"/selenium.jar ] || [ "$(java -jar $MINK_DEBUG_CACHE_DIR/selenium.jar --version | grep -c 3.141.59)" = "0" ]; then
           curl http://selenium-release.storage.googleapis.com/3.141/selenium-server-standalone-3.141.59.jar > selenium.jar
-          mv selenium.jar "$MINK_DEBUG_CACHE_DIR"
+          mv selenium.jar $MINK_DEBUG_CACHE_DIR
       fi
+    - echo "Selenium was downloaded and copied!"
 
     # Run Selenium
     - java -Dwebdriver.chrome.driver=$MINK_DEBUG_CACHE_DIR/chromedriver -jar $MINK_DEBUG_CACHE_DIR/selenium.jar &
-    - echo -e "Selenium was started in the background!\n"
+    - echo "Selenium was started in the background!"
     - ./travis/tools/wait-for-port 4444
 
 script:
