@@ -1,6 +1,5 @@
 os: linux
 dist: bionic
-sudo: false
 language: php
 
 env:
