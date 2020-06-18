@@ -46,3 +46,7 @@ script:
     - composer validate --strict
     - vendor/bin/phpspec run
     - vendor/bin/behat --strict || vendor/bin/behat --strict --rerun
+
+after_failure:
+    - cat "$MINK_DEBUG_CACHE_DIR/chromedriver.log"
+    - cat "$MINK_DEBUG_CACHE_DIR/selenium.log"
