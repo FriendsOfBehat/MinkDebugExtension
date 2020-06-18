@@ -53,6 +53,7 @@ before_script:
 
     # Run ChromeDriver
     - $MINK_DEBUG_CACHE_DIR/chromedriver > $MINK_DEBUG_CACHE_DIR/chromedriver.log 2>&1 &
+    - echo -e "Chromedriver was started in the background!\n"
 
     # Download and configure Selenium
     - |
@@ -63,6 +64,7 @@ before_script:
 
     # Run Selenium
     - java -Dwebdriver.chrome.driver=$MINK_DEBUG_CACHE_DIR/chromedriver -jar $MINK_DEBUG_CACHE_DIR/selenium.jar > $MINK_DEBUG_CACHE_DIR/selenium.log 2>&1 &
+    - echo -e "Selenium was started in the background!\n"
     - ./travis/tools/wait-for-port 4444
 
 script:
