@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Lakion package.
  *
@@ -26,9 +28,10 @@ use Symfony\Component\DependencyInjection\Reference;
 class MinkDebugExtension implements ExtensionInterface
 {
     /**
-     * {@inheritdoc}
+     * @param ContainerBuilder $container
+     * @param array<string, mixed> $config
      */
-    public function load(ContainerBuilder $container, array $config)
+    public function load(ContainerBuilder $container, array $config): void
     {
         $this->loadStepFailureListener($container);
 
@@ -39,10 +42,7 @@ class MinkDebugExtension implements ExtensionInterface
         $container->setParameter('mink_debug.clean_start', $config['clean_start']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configure(ArrayNodeDefinition $builder)
+    public function configure(ArrayNodeDefinition $builder): void
     {
         $builder
             ->children()
@@ -52,32 +52,20 @@ class MinkDebugExtension implements ExtensionInterface
             ->end();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigKey()
+    public function getConfigKey(): string
     {
         return 'mink_debug';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function initialize(ExtensionManager $extensionManager)
+    public function initialize(ExtensionManager $extensionManager): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
     }
 
-    /**
-     * @param ContainerBuilder $container
-     */
-    private function loadStepFailureListener(ContainerBuilder $container)
+    private function loadStepFailureListener(ContainerBuilder $container): void
     {
         $definition = new Definition(FailedStepListener::class, [
             new Reference('mink'),
@@ -91,9 +79,9 @@ class MinkDebugExtension implements ExtensionInterface
     }
 
     /**
-     * @param array $config
+     * @param array<string, mixed> $config
      */
-    private function removeAllExistingLogsIfRequested(array $config)
+    private function removeAllExistingLogsIfRequested(array $config): void
     {
         if ($config['clean_start']) {
             array_map('unlink', glob($config['directory'] . '/*.log'));
