@@ -1,38 +1,36 @@
+os: linux
+dist: bionic
+sudo: false
 language: php
 
-sudo: false
-
 php:
-    - 7.0
-    - 5.6
-    - 5.5
-    - hhvm
+    - 7.4
+    - 7.3
+    - 7.2
 
 env:
     global:
         - MINK_DEBUG_CACHE_DIR=$HOME/.mink-debug-cache
         - COMPOSER_OPTIONS=""
 
-matrix:
+jobs:
     include:
-        - php: 5.5
+        - name: Latest dependencies
+        - name: Oldest dependencies
           env: COMPOSER_OPTIONS="--prefer-lowest"
 
 cache:
     directories:
-        - vendor
+        - ~/composer/.cache
         - $MINK_DEBUG_CACHE_DIR
 
 before_install:
     - phpenv config-rm xdebug.ini || true
-
     - mkdir -p $MINK_DEBUG_CACHE_DIR
-
     - composer self-update
 
 install:
     - composer update --prefer-dist $COMPOSER_OPTIONS
-
     - travis/run-selenium
 
 before_script:
@@ -40,6 +38,5 @@ before_script:
 
 script:
     - composer validate --strict
-
     - vendor/bin/phpspec run
     - vendor/bin/behat --strict || vendor/bin/behat --strict --rerun
