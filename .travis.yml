@@ -27,7 +27,7 @@ jobs:
 
 cache:
     directories:
-        - ~/composer/.cache
+        - ~/.composer/cache/files
         - $MINK_DEBUG_CACHE_DIR
 
 before_install:
