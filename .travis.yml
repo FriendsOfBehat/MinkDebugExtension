@@ -3,11 +3,6 @@ dist: bionic
 sudo: false
 language: php
 
-php:
-    - 7.4
-    - 7.3
-    - 7.2
-
 env:
     global:
         - MINK_DEBUG_CACHE_DIR=$HOME/.mink-debug-cache
@@ -15,8 +10,20 @@ env:
 
 jobs:
     include:
-        - name: Latest dependencies
-        - name: Oldest dependencies
+        - name: PHP 7.4 Latest dependencies
+          php: 7.4
+        - name: PHP 7.4 Oldest dependencies
+          php: 7.4
+          env: COMPOSER_OPTIONS="--prefer-lowest"
+        - name: PHP 7.3 Latest dependencies
+          php: 7.3
+        - name: PHP 7.3 Oldest dependencies
+          php: 7.3
+          env: COMPOSER_OPTIONS="--prefer-lowest"
+        - name: PHP 7.2 Latest dependencies
+          php: 7.2
+        - name: PHP 7.2 Oldest dependencies
+          php: 7.2
           env: COMPOSER_OPTIONS="--prefer-lowest"
 
 cache:
