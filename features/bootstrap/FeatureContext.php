@@ -80,6 +80,9 @@ class FeatureContext implements SnippetAcceptingContext
      */
     public function thereShouldBeTextLogGenerated()
     {
+var_dump($this->testApplicationDir . '/' . $this->configuration['%directory%']);ob_flush();ob_clean();
+var_dump(scandir($this->testApplicationDir . '/' . $this->configuration['%directory%']));ob_flush();ob_clean();
+
         $logPattern = $this->testApplicationDir . '/' . $this->configuration['%directory%'] . '/*.log';
 
         $logsAmount = count(glob($logPattern));
