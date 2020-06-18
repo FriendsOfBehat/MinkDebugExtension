@@ -37,9 +37,33 @@ before_install:
 
 install:
     - composer update --prefer-dist $COMPOSER_OPTIONS
-    - travis/run-selenium
 
 before_script:
+    # Configure display
+    - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1680x1050x16
+    - export DISPLAY=:99
+
+    # Download and configure ChromeDriver
+    - |
+      if [ ! -f "$MINK_DEBUG_CACHE_DIR"/chromedriver ] || [ "$($MINK_DEBUG_CACHE_DIR/chromedriver --version | grep -c 80.0.3987.106)" = "0" ]; then
+          curl https://chromedriver.storage.googleapis.com/80.0.3987.106/chromedriver_linux64.zip > chromedriver.zip
+          unzip chromedriver.zip
+          chmod +x chromedriver
+          mv chromedriver "$MINK_DEBUG_CACHE_DIR"
+      fi
+
+    # Run ChromeDriver
+    - "$MINK_DEBUG_CACHE_DIR"/chromedriver > "$MINK_DEBUG_CACHE_DIR"/chromedriver.log 2>&1 &
+
+    # Download and configure Selenium
+    - |
+      if [ ! -f "$MINK_DEBUG_CACHE_DIR"/selenium.jar ] || [ "$(java -jar $MINK_DEBUG_CACHE_DIR/selenium.jar --version | grep -c 3.141.59)" = "0" ]; then
+          curl http://selenium-release.storage.googleapis.com/3.141/selenium-server-standalone-3.141.59.jar > selenium.jar
+          mv selenium.jar "$MINK_DEBUG_CACHE_DIR"
+      fi
+
+    # Run Selenium
+    - java -Dwebdriver.chrome.driver="$MINK_DEBUG_CACHE_DIR"/chromedriver -jar "$MINK_DEBUG_CACHE_DIR"/selenium.jar > "$MINK_DEBUG_CACHE_DIR"/selenium.log 2>&1 &
     - travis/tools/wait-for-port 4444
 
 script:
