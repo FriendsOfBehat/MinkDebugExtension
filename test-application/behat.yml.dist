@@ -24,10 +24,22 @@ javascript:
             screenshot: %screenshot%
             clean_start: %clean_start%
         Behat\MinkExtension:
+            javascript_session: chrome
             sessions:
-                javascript:
-                    selenium2: ~
-            browser_name: firefox
+                chrome:
+                    selenium2:
+                        browser: chrome
+                        capabilities:
+                            browserName: chrome
+                            browser: chrome
+                            version: ""
+                            chrome:
+                                switches:
+                                    - "start-fullscreen"
+                                    - "start-maximized"
+                                    - "no-sandbox"
+                            extra_capabilities:
+                                unexpectedAlertBehaviour: accept
             show_auto: false
 
     gherkin:

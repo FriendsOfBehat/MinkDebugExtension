@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
 use Symfony\Component\Process\PhpExecutableFinder;
@@ -21,7 +23,7 @@ class FeatureContext implements SnippetAcceptingContext
     private $process;
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     private $configuration = ['%clean_start%' => 'true'];
 
@@ -33,7 +35,7 @@ class FeatureContext implements SnippetAcceptingContext
     /**
      * @BeforeScenario
      */
-    public function prepareProcess()
+    public function prepareProcess(): void
     {
         $phpFinder = new PhpExecutableFinder();
         if (false === $php = $phpFinder->find()) {
@@ -48,7 +50,7 @@ class FeatureContext implements SnippetAcceptingContext
     /**
      * @Given there is following Behat extension configuration:
      */
-    public function thereIsBehatExtensionConfiguration(TableNode $table)
+    public function thereIsBehatExtensionConfiguration(TableNode $table): void
     {
         foreach ($table->getRowsHash() as $key => $value) {
             $this->configuration['%' . $key . '%'] = $value;
@@ -58,7 +60,7 @@ class FeatureContext implements SnippetAcceptingContext
     /**
      * @Given /configuration option "([^"]+?)" is set to "([^"]+?)"/
      */
-    public function configurationOptionSet($key, $value)
+    public function configurationOptionSet(string $key, string $value): void
     {
         $this->configuration['%' . $key . '%'] = $value;
     }
@@ -66,7 +68,7 @@ class FeatureContext implements SnippetAcceptingContext
     /**
      * @When /I run behat with failing scenarios(?: using (.+?) profile)?/
      */
-    public function iRunBehat($profile = null)
+    public function iRunBehat(?string $profile = null): void
     {
         $this->createBehatConfigurationFile();
 
@@ -78,7 +80,7 @@ class FeatureContext implements SnippetAcceptingContext
     /**
      * @Then there should be text log generated
      */
-    public function thereShouldBeTextLogGenerated()
+    public function thereShouldBeTextLogGenerated(): void
     {
         $logPattern = $this->testApplicationDir . '/' . $this->configuration['%directory%'] . '/*.log';
 
@@ -91,7 +93,7 @@ class FeatureContext implements SnippetAcceptingContext
     /**
      * @Then a screenshot should be made
      */
-    public function screenshotShouldBeMade()
+    public function screenshotShouldBeMade(): void
     {
         $screenshotPattern = $this->testApplicationDir . '/' . $this->configuration['%directory%'] . '/*.png';
 
@@ -104,7 +106,7 @@ class FeatureContext implements SnippetAcceptingContext
     /**
      * @Then a screenshot should not be made
      */
-    public function screenshotShouldNotBeMade()
+    public function screenshotShouldNotBeMade(): void
     {
         $screenshotPattern = $this->testApplicationDir . '/' . $this->configuration['%directory%'] . '/*.png';
 
@@ -114,7 +116,7 @@ class FeatureContext implements SnippetAcceptingContext
         }
     }
 
-    private function createBehatConfigurationFile()
+    private function createBehatConfigurationFile(): void
     {
         $behatConfiguration = strtr(
             file_get_contents($this->testApplicationDir . '/behat.yml.dist'),
@@ -124,12 +126,7 @@ class FeatureContext implements SnippetAcceptingContext
         file_put_contents($this->testApplicationDir . '/behat.yml', $behatConfiguration);
     }
 
-    /**
-     * @param string|null $profile
-     *
-     * @return string|null
-     */
-    private function getConfigurationStringForProfile($profile)
+    private function getConfigurationStringForProfile(?string $profile): ?string
     {
         if (null !== $profile) {
             return '-p ' . $profile;
@@ -138,10 +135,7 @@ class FeatureContext implements SnippetAcceptingContext
         return null;
     }
 
-    /**
-     * @param string $configurationAsString
-     */
-    private function doRunBehat($configurationAsString)
+    private function doRunBehat(?string $configurationAsString): void
     {
         $this->process->setWorkingDirectory($this->testApplicationDir);
         $this->process->setCommandLine(
@@ -155,9 +149,11 @@ class FeatureContext implements SnippetAcceptingContext
 
         $this->process->start();
         $this->process->wait();
+
+        printf("stdOut:\n %s\nstdErr:\n%s\n", $this->process->getOutput(), $this->process->getErrorOutput());
     }
 
-    private function deleteBehatConfigurationFile()
+    private function deleteBehatConfigurationFile(): void
     {
         if (file_exists($behatFile = $this->testApplicationDir . '/behat.yml')) {
             unlink($behatFile);
