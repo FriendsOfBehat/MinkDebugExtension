@@ -1,0 +1,50 @@
+---------------------------------------------------------------------------
+
+by 4c0n at 2020-06-18T13:43:00Z
+
+@pamil The build is updated and fixed, could you take a look please?
+
+If/when you merge this, could you please use the squash strategy? I'd hate to see this whole commit stream in the main branch. :)
+
+---------------------------------------------------------------------------
+
+by 4c0n at 2020-07-09T08:48:01Z
+
+@pamil https://www.youtube.com/watch?v=1U888OuzC6w
+
+---------------------------------------------------------------------------
+
+by 4c0n at 2020-07-27T09:49:13Z
+
+@pamil Any specific reason you're not responding? You asked me to do this, so please have a look at it.
+
+---------------------------------------------------------------------------
+
+by 4c0n at 2020-08-03T14:47:05Z
+
+@pamil When do you think you'll have time to deal with this?
+
+---------------------------------------------------------------------------
+
+by lchrusciel at 2020-09-01T07:29:10Z
+
+Hey Youri,
+
+Sorry for the long feedback loop. We had internally a few commitments to finish, which blocked us from being active on our additional repositories. I hope we will find more time for it after Sylius 1.8 will be released (14th of September).
+
+However, in terms of this PR, I'm totally in favor of merging it 👍
+
+---------------------------------------------------------------------------
+
+by 4c0n at 2020-09-01T08:16:29Z
+
+Hi Lukasz,
+
+Thanks for the review! Nothing special going on here logic wise, just bringing everything to 2020.
+Hope everything is going well with the Sylius development. Lots of big changes!
+
+---------------------------------------------------------------------------
+
+by pamil at 2020-09-16T11:25:04Z
+
+Thanks, Youri! :1st_place_medal:
