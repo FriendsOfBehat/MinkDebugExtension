@@ -1,0 +1,159 @@
+---------------------------------------------------------------------------
+
+by 4c0n at 2020-06-15T07:37:50Z
+
+@michalmarcinkowski Could anyone have a look at this PR, please?
+
+---------------------------------------------------------------------------
+
+by michalmarcinkowski at 2020-06-15T10:59:10Z
+
+Hi @4c0n, I guess @pamil could have a look. However the tests are not passing so please fix it first.
+
+---------------------------------------------------------------------------
+
+by 4c0n at 2020-06-17T15:07:36Z
+
+@michalmarcinkowski @pamil Hate to use this line, but "it works fine on my machine":
+`Feature: Logging debug data
+  In order to debug my Behat suites with ease
+  As a developer
+  I want to be able to access logs
+
+  Background:                                               # features/mink_debug.feature:6
+    Given there is following Behat extension configuration: # FeatureContext::thereIsBehatExtensionConfiguration()
+      | directory  | logs |
+      | screenshot | true |
+
+  Scenario:                                 # features/mink_debug.feature:11
+    When I run behat with failing scenarios # FeatureContext::iRunBehat()
+    Then there should be text log generated # FeatureContext::thereShouldBeTextLogGenerated()
+
+  Scenario:                                                          # features/mink_debug.feature:15
+    When I run behat with failing scenarios using javascript profile # FeatureContext::iRunBehat()
+    Then there should be text log generated                          # FeatureContext::thereShouldBeTextLogGenerated()
+    And a screenshot should be made                                  # FeatureContext::screenshotShouldBeMade()
+
+  Scenario:                                                          # features/mink_debug.feature:20
+    Given configuration option "screenshot" is set to "false"        # FeatureContext::configurationOptionSet()
+    When I run behat with failing scenarios using javascript profile # FeatureContext::iRunBehat()
+    Then there should be text log generated                          # FeatureContext::thereShouldBeTextLogGenerated()
+    And a screenshot should not be made                              # FeatureContext::screenshotShouldNotBeMade()
+
+3 scenarios (3 passed)
+12 steps (12 passed)
+0m1.75s (9.99Mb)`
+
+The first build on travis-ci, I don't know what's wrong, there is not enough information to go by. The other builds run on very old PHP versions and have out of memory issues when running composer.
+
+I'm sorry, but this has nothing to do with my PR? ¯\_(ツ)_/¯
+
+---------------------------------------------------------------------------
+
+by pamil at 2020-06-17T15:22:18Z
+
+@4c0n I guess the build needs to be fixed first. Would you be willing to open a PR? We could drop the support for HHVM and PHP <7.2.
+
+@michalmarcinkowski would you be willing to transfer this repository to @FriendsOfBehat? It'll be easier for me to maintain it there and build a community around it, especially after https://github.com/Behat/Behat/pull/1296, making it a central place for Behat extensions.
+
+---------------------------------------------------------------------------
+
+by 4c0n at 2020-06-17T16:12:35Z
+
+@pamil Sure no problem, I can have a look tomorrow or the day after.
+
+---------------------------------------------------------------------------
+
+by michalmarcinkowski at 2020-06-18T16:43:17Z
+
+> @michalmarcinkowski would you be willing to transfer this repository to @FriendsOfBehat? It'll be easier for me to maintain it there and build a community around it, especially after [Behat/Behat#1296](https://github.com/Behat/Behat/issues/1296), making it a central place for Behat extensions.
+
+Sure! @pamil I received "You don’t have the permission to create public repositories on FriendsOfBehat" when wanted to transfer. However I gave you full admin so maybe you can try it yourself.
+
+---------------------------------------------------------------------------
+
+by 4c0n at 2020-06-22T10:38:06Z
+
+The PR to fix the builds can be found here: https://github.com/Lakion/MinkDebugExtension/pull/34
+
+---------------------------------------------------------------------------
+
+by 4c0n at 2020-07-02T15:34:09Z
+
+@pamil I realize you must be very busy, but I'd like to ask you if we can move this forward somehow anyway :stuck_out_tongue_closed_eyes:
+
+---------------------------------------------------------------------------
+
+by 4c0n at 2020-07-27T09:49:48Z
+
+@pamil I'd really like to move this forward.
+
+---------------------------------------------------------------------------
+
+by 4c0n at 2020-08-03T14:46:49Z
+
+@pamil When do you think you'll have time to deal with this?
+
+---------------------------------------------------------------------------
+
+by 4c0n at 2020-08-21T08:29:07Z
+
+Hi @pamil Could you respond please? Do you still plan on taking over the repository? I put in the work you asked me to and then you never responded to any of it. Of course I still need this original change.
+
+@michalmarcinkowski Maybe you can provide some form of update?
+
+---------------------------------------------------------------------------
+
+by 4c0n at 2020-08-28T11:12:01Z
+
+@pamil @michalmarcinkowski ping
+
+---------------------------------------------------------------------------
+
+by michalmarcinkowski at 2020-08-31T11:12:07Z
+
+> > @michalmarcinkowski would you be willing to transfer this repository to @FriendsOfBehat? It'll be easier for me to maintain it there and build a community around it, especially after [Behat/Behat#1296](https://github.com/Behat/Behat/issues/1296), making it a central place for Behat extensions.
+>
+> Sure! @pamil I received "You don’t have the permission to create public repositories on FriendsOfBehat" when wanted to transfer. However I gave you full admin so maybe you can try it yourself.
+
+@pamil, @lchrusciel do you plan to transfer the repository?
+
+</br>
+
+> Hi @pamil Could you respond please? Do you still plan on taking over the repository? I put in the work you asked me to and then you never responded to any of it. Of course I still need this original change.
+>
+> @michalmarcinkowski Maybe you can provide some form of update?
+
+@4c0n I can only help you with pinging, all communication with @pamil from my side is here 😉
+
+---------------------------------------------------------------------------
+
+by lchrusciel at 2020-08-31T12:35:42Z
+
+Hey @michalmarcinkowski, can you add me as an Administrator this repo? I try to push on our end.
+
+Hey @4c0n, thanks for your patience and sorry for the long feedback loop. I will try to bring this repo to the FriendsOfBehat organization, however, I cannot guarantee, that we will find some space to work on it in the nearest future.
+
+---------------------------------------------------------------------------
+
+by michalmarcinkowski at 2020-09-01T05:55:07Z
+
+@lchrusciel done. In case you need any help just let me know 😉
+
+---------------------------------------------------------------------------
+
+by lchrusciel at 2020-09-01T07:26:44Z
+
+@michalmarcinkowski thanks a lot 👍 Repository transferred to the `FriendsOfBehat` namespace.
+
+---------------------------------------------------------------------------
+
+by michalmarcinkowski at 2020-09-06T08:10:15Z
+
+@lchrusciel glad that it worked 🎉 All the best with further development 😉
+
+---------------------------------------------------------------------------
+
+by pamil at 2020-09-16T11:37:09Z
+
+Thank you, Youri! :1st_place_medal:
