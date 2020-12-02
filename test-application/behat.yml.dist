@@ -5,9 +5,10 @@ default:
                 - Behat\MinkExtension\Context\MinkContext
 
     extensions:
-        Lakion\Behat\MinkDebugExtension:
+        FriendsOfBehat\MinkDebugExtension:
             directory: %directory%
             clean_start: %clean_start%
+
         Behat\MinkExtension:
             sessions:
                 default:
@@ -19,27 +20,20 @@ default:
 
 javascript:
     extensions:
-        Lakion\Behat\MinkDebugExtension:
+        FriendsOfBehat\MinkDebugExtension:
             directory: %directory%
             screenshot: %screenshot%
             clean_start: %clean_start%
+
+        DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
+
         Behat\MinkExtension:
             javascript_session: chrome
             sessions:
                 chrome:
-                    selenium2:
-                        browser: chrome
-                        capabilities:
-                            browserName: chrome
-                            browser: chrome
-                            version: ""
-                            chrome:
-                                switches:
-                                    - "start-fullscreen"
-                                    - "start-maximized"
-                                    - "no-sandbox"
-                            extra_capabilities:
-                                unexpectedAlertBehaviour: accept
+                    chrome:
+                        api_url: http://127.0.0.1:9222
+                        validate_certificate: false
             show_auto: false
 
     gherkin:

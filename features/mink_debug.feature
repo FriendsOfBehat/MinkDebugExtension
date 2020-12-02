@@ -9,16 +9,16 @@ Feature: Logging debug data
         | screenshot | true |
 
   Scenario:
-     When I run behat with failing scenarios
+     When I run Behat with failing scenarios
      Then there should be text log generated
 
   Scenario:
-     When I run behat with failing scenarios using javascript profile
+     When I run Behat with failing scenarios using javascript profile
      Then there should be text log generated
       And a screenshot should be made
 
   Scenario:
     Given configuration option "screenshot" is set to "false"
-     When I run behat with failing scenarios using javascript profile
+     When I run Behat with failing scenarios using javascript profile
      Then there should be text log generated
       And a screenshot should not be made

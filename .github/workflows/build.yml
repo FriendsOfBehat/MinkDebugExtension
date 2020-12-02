@@ -1,0 +1,62 @@
+name: Build
+
+on:
+    push: ~
+    pull_request: ~
+    release:
+        types: [created]
+    schedule:
+        -
+            cron: "0 1 * * 6" # Run at 1am every Saturday
+
+jobs:
+    tests:
+        runs-on: ubuntu-latest
+
+        name: "PHP ${{ matrix.php }}"
+
+        strategy:
+            fail-fast: false
+            matrix:
+                php: [8.0, 7.4, 7.3, 7.2]
+
+        steps:
+            -
+                uses: actions/checkout@v2
+
+            -
+                name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: "${{ matrix.php }}"
+                    coverage: none
+
+            -
+                name: Run Chrome Headless
+                run: google-chrome-stable --enable-automation --disable-background-networking --no-default-browser-check --no-first-run --disable-popup-blocking --disable-default-apps --allow-insecure-localhost --disable-translate --disable-extensions --no-sandbox --enable-features=Metal --headless --remote-debugging-port=9222 --window-size=2880,1800 --proxy-server='direct://' --proxy-bypass-list='*' http://127.0.0.1 > /dev/null 2>&1 &
+
+            -
+                name: Get Composer cache directory
+                id: composer-cache
+                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            -
+                name: Cache Composer
+                uses: actions/cache@v2
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
+                    restore-keys: |
+                        ${{ runner.os }}-php-${{ matrix.php }}-composer-
+
+            -
+                name: Install PHP dependencies
+                run: composer install --no-interaction
+
+            -
+                name: Validate composer.json
+                run: composer validate --ansi --strict
+
+            -
+                name: Run Behat
+                run: vendor/bin/behat --colors --strict --no-interaction -vvv -f progress

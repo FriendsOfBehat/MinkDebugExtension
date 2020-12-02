@@ -2,16 +2,7 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Lakion package.
- *
- * (c) Paweł Jędrzejewski
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace Lakion\Behat\MinkDebugExtension\Listener;
+namespace FriendsOfBehat\MinkDebugExtension\Listener;
 
 use Behat\Behat\EventDispatcher\Event\AfterStepTested;
 use Behat\Behat\EventDispatcher\Event\StepTested;
@@ -23,10 +14,7 @@ use Behat\Testwork\Tester\Result\TestResult;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use WebDriver\Exception as WebDriverException;
 
-/**
- * @author Kamil Kokot <kamil.kokot@lakion.com>
- */
-class FailedStepListener implements EventSubscriberInterface
+final class FailedStepListener implements EventSubscriberInterface
 {
     /**
      * @var Mink
@@ -58,7 +46,7 @@ class FailedStepListener implements EventSubscriberInterface
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, array>
      */
     public static function getSubscribedEvents(): array
     {
@@ -67,9 +55,6 @@ class FailedStepListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param AfterStepTested $event
-     */
     public function logFailedStepInformations(AfterStepTested $event): void
     {
         $testResult = $event->getTestResult();
@@ -85,6 +70,7 @@ class FailedStepListener implements EventSubscriberInterface
         $this->currentDateAsString = date('YmdHis');
 
         $this->logPageContent();
+
         if ($this->screenshot) {
             $this->logScreenshot();
         }
@@ -98,7 +84,7 @@ class FailedStepListener implements EventSubscriberInterface
         $log .= $this->getResponseHeadersLogMessage($session);
         $log .= $this->getResponseContentLogMessage($session);
 
-        $this->saveLog($log, 'log');
+        $this->saveLog($log, 'html');
     }
 
     private function logScreenshot(): void
@@ -107,8 +93,7 @@ class FailedStepListener implements EventSubscriberInterface
 
         try {
             $this->saveLog($session->getScreenshot(), 'png');
-        } catch (UnsupportedDriverActionException $unsupportedDriverActionException) {
-        } catch (WebDriverException $exception) {}
+        } catch (UnsupportedDriverActionException | WebDriverException $exception) {}
     }
 
     private function saveLog(string $content, string $type): void
@@ -136,9 +121,7 @@ class FailedStepListener implements EventSubscriberInterface
     {
         try {
             return $session->getStatusCode();
-        } catch (MinkException $exception) {
-            return null;
-        } catch (WebDriverException $exception) {
+        } catch (MinkException | WebDriverException $exception) {
             return null;
         }
     }
@@ -147,9 +130,7 @@ class FailedStepListener implements EventSubscriberInterface
     {
         try {
             return $session->getCurrentUrl();
-        } catch (MinkException $exception) {
-            return null;
-        } catch (WebDriverException $exception) {
+        } catch (MinkException | WebDriverException $exception) {
             return null;
         }
     }
@@ -158,9 +139,7 @@ class FailedStepListener implements EventSubscriberInterface
     {
         try {
             return 'Response headers:' . "\n" . print_r($session->getResponseHeaders(), true) . "\n";
-        } catch (MinkException $exception) {
-            return null;
-        } catch (WebDriverException $exception) {
+        } catch (MinkException | WebDriverException $exception) {
             return null;
         }
     }
@@ -169,9 +148,7 @@ class FailedStepListener implements EventSubscriberInterface
     {
         try {
             return 'Response content:' . "\n" . $session->getPage()->getContent() . "\n";
-        } catch (MinkException $exception) {
-            return null;
-        } catch (WebDriverException $exception) {
+        } catch (MinkException | WebDriverException $exception) {
             return null;
         }
     }
