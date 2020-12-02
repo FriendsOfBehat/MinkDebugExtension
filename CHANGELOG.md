@@ -4,6 +4,7 @@
 
 * Added support for PHP 8.0
 * Allowed taking screenshots with more drivers than just Selenium2Driver
+* Changed log files extension from `.log` to `.html`
 * Removed supplementary `upload-textfiles`, `upload-screenshots`, `wait-for-port` binaries
 * Renamed extension from `Lakion\Behat\MinkDebugExtension` to `FriendsOfBehat\MinkDebugExtension`
 
