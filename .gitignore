@@ -2,7 +2,6 @@
 /composer.lock
 
 /behat.yml
-/phpspec.yml
 
 /test-application/logs/*
 !/test-application/logs/.gitkeep
