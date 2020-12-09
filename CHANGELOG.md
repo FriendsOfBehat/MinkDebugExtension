@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### v2.0.1
+
+- [#35](https://github.com/FriendsOfBehat/MinkDebugExtension/issues/35) Ignore StreamReadException as well ([@pamil](https://github.com/pamil))
+
 ### v2.0.0
 
 * Added support for PHP 8.0
