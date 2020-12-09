@@ -11,6 +11,7 @@ use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Behat\Testwork\Tester\Result\TestResult;
+use DMore\ChromeDriver\StreamReadException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use WebDriver\Exception as WebDriverException;
 
@@ -121,7 +122,7 @@ final class FailedStepListener implements EventSubscriberInterface
     {
         try {
             return $session->getStatusCode();
-        } catch (MinkException | WebDriverException $exception) {
+        } catch (MinkException | WebDriverException | StreamReadException $exception) {
             return null;
         }
     }
@@ -130,7 +131,7 @@ final class FailedStepListener implements EventSubscriberInterface
     {
         try {
             return $session->getCurrentUrl();
-        } catch (MinkException | WebDriverException $exception) {
+        } catch (MinkException | WebDriverException | StreamReadException $exception) {
             return null;
         }
     }
@@ -139,7 +140,7 @@ final class FailedStepListener implements EventSubscriberInterface
     {
         try {
             return 'Response headers:' . "\n" . print_r($session->getResponseHeaders(), true) . "\n";
-        } catch (MinkException | WebDriverException $exception) {
+        } catch (MinkException | WebDriverException | StreamReadException $exception) {
             return null;
         }
     }
@@ -148,7 +149,7 @@ final class FailedStepListener implements EventSubscriberInterface
     {
         try {
             return 'Response content:' . "\n" . $session->getPage()->getContent() . "\n";
-        } catch (MinkException | WebDriverException $exception) {
+        } catch (MinkException | WebDriverException | StreamReadException $exception) {
             return null;
         }
     }
