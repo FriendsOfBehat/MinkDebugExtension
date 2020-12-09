@@ -29,6 +29,11 @@
         "dmore/chrome-mink-driver": "^2.7",
         "symfony/process": "^4.4 || ^5.2"
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.1-dev"
+        }
+    },
     "autoload": {
         "psr-4": {
             "FriendsOfBehat\\MinkDebugExtension\\": "src/"
