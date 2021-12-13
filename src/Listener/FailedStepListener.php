@@ -20,24 +20,24 @@ final class FailedStepListener implements EventSubscriberInterface
     /**
      * @var Mink
      */
-    private $mink;
+    private Mink $mink;
 
     /**
      * @var string
      */
-    private $logDirectory;
+    private string $logDirectory;
 
     /**
      * @var bool
      */
-    private $screenshot;
+    private bool $screenshot;
 
     /**
      * Used to ensure that screenshot and log comes from the same failed step.
      *
      * @var string
      */
-    private $currentDateAsString;
+    private string $currentDateAsString;
 
     public function __construct(Mink $mink, string $logDirectory, bool $screenshot)
     {
