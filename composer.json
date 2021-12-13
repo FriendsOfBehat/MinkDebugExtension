@@ -18,7 +18,7 @@
         }
     ],
     "require": {
-        "php": "^7.2 || ^8.0",
+        "php": ">=7.4",
         "behat/behat": "^3.5",
         "behat/mink-extension": "^2.3"
     },

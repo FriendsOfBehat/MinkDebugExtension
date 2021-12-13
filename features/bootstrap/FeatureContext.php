@@ -10,13 +10,13 @@ use Symfony\Component\Process\Process;
 final class FeatureContext implements Context
 {
     /** @var string */
-    private $phpBin;
+    private string $phpBin;
 
     /** @var array<string, string> */
-    private $configuration = ['%clean_start%' => 'true'];
+    private array $configuration = ['%clean_start%' => 'true'];
 
     /** @var string */
-    private $testApplicationDir;
+    private string $testApplicationDir;
 
     /**
      * @BeforeScenario
