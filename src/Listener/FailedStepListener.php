@@ -148,7 +148,7 @@ final class FailedStepListener implements EventSubscriberInterface
     private function getResponseContentLogMessage(Session $session): ?string
     {
         try {
-            return 'Response content:' . "\n" . $session->getPage()->getContent() . "\n";
+            return 'Response content:' . "\n" . $session->getPage()->getOuterHtml() . "\n";
         } catch (MinkException | WebDriverException | StreamReadException $exception) {
             return null;
         }
