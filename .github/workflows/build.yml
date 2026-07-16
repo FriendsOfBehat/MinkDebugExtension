@@ -9,19 +9,19 @@ jobs:
     tests:
         runs-on: ubuntu-latest
         continue-on-error: false
-        name: "PHP ${{ matrix.php }}"
+        name: "Behat 3 (PHP ${{ matrix.php }})"
 
         strategy:
             fail-fast: false
             matrix:
                 php:
-                    - '7.4'
-                    - '8.0'
-                    - '8.1'
+                    - '8.2'
+                    - '8.3'
+                    - '8.4'
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -36,10 +36,10 @@ jobs:
 
             - name: Get Composer cache directory
               id: composer-cache
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+              run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
             - name: Cache Composer
-              uses: actions/cache@v2
+              uses: actions/cache@v4
               with:
                   path: ${{ steps.composer-cache.outputs.dir }}
                   key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
@@ -51,6 +51,54 @@ jobs:
 
             - name: Validate composer.json
               run: composer validate --ansi --strict
+
+            - name: Run Behat
+              run: vendor/bin/behat --colors --strict --no-interaction -vvv -f progress
+
+    tests-behat4:
+        runs-on: ubuntu-latest
+        continue-on-error: false
+        name: "Behat 4 (PHP ${{ matrix.php }})"
+
+        # friends-of-behat/mink-extension v3 (Behat 4) requires PHP ^8.3, so this leg runs on 8.3+.
+        # Behat 4 and mink-extension v3 are still in alpha, so the alpha line is opted into here (via the
+        # explicit @alpha require) rather than in composer.json, keeping the released constraints alias-free.
+        strategy:
+            fail-fast: false
+            matrix:
+                php:
+                    - '8.3'
+                    - '8.4'
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  coverage: none
+                  ini-values: "memory_limit=-1"
+                  php-version: ${{ matrix.php }}
+                  tools: composer:v2
+
+            - name: Run Chrome Headless
+              run: google-chrome-stable --enable-automation --disable-background-networking --no-default-browser-check --no-first-run --disable-popup-blocking --disable-default-apps --allow-insecure-localhost --disable-translate --disable-extensions --no-sandbox --enable-features=Metal --headless --remote-debugging-port=9222 --window-size=2880,1800 --proxy-server='direct://' --proxy-bypass-list='*' http://127.0.0.1 > /dev/null 2>&1 &
+
+            - name: Get Composer cache directory
+              id: composer-cache
+              run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+            - name: Cache Composer
+              uses: actions/cache@v4
+              with:
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: ${{ runner.os }}-php-${{ matrix.php }}-composer-behat4-${{ hashFiles('**/composer.json **/composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-php-${{ matrix.php }}-composer-behat4-
+
+            - name: Install PHP dependencies (Behat 4)
+              run: composer require behat/behat:"^4.0@alpha" friends-of-behat/mink-extension:"^3.0@alpha" --with-all-dependencies --no-interaction
 
             - name: Run Behat
               run: vendor/bin/behat --colors --strict --no-interaction -vvv -f progress

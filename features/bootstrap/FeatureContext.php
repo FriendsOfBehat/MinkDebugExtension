@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Hook\BeforeScenario;
+use Behat\Step\Given;
+use Behat\Step\Then;
+use Behat\Step\When;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
@@ -18,9 +22,7 @@ final class FeatureContext implements Context
     /** @var string */
     private string $testApplicationDir;
 
-    /**
-     * @BeforeScenario
-     */
+    #[BeforeScenario]
     public function prepareProcess(): void
     {
         $phpFinder = new PhpExecutableFinder();
@@ -32,9 +34,7 @@ final class FeatureContext implements Context
         $this->testApplicationDir = __DIR__ . '/../../test-application';
     }
 
-    /**
-     * @Given there is following Behat extension configuration:
-     */
+    #[Given('there is following Behat extension configuration:')]
     public function thereIsBehatExtensionConfiguration(TableNode $table): void
     {
         foreach ($table->getRowsHash() as $key => $value) {
@@ -42,17 +42,13 @@ final class FeatureContext implements Context
         }
     }
 
-    /**
-     * @Given /configuration option "([^"]+?)" is set to "([^"]+?)"/
-     */
+    #[Given('/configuration option "([^"]+?)" is set to "([^"]+?)"/')]
     public function configurationOptionSet(string $key, string $value): void
     {
         $this->configuration['%' . $key . '%'] = $value;
     }
 
-    /**
-     * @When /I run Behat with failing scenarios(?: using (.+?) profile)?/
-     */
+    #[When('/I run Behat with failing scenarios(?: using (.+?) profile)?/')]
     public function iRunBehat(?string $profile = null): void
     {
         $this->createBehatConfigurationFile();
@@ -62,9 +58,7 @@ final class FeatureContext implements Context
         $this->deleteBehatConfigurationFile();
     }
 
-    /**
-     * @Then there should be text log generated
-     */
+    #[Then('there should be text log generated')]
     public function thereShouldBeTextLogGenerated(): void
     {
         $logPattern = $this->testApplicationDir . '/' . $this->configuration['%directory%'] . '/*.html';
@@ -75,9 +69,7 @@ final class FeatureContext implements Context
         }
     }
 
-    /**
-     * @Then a screenshot should be made
-     */
+    #[Then('a screenshot should be made')]
     public function screenshotShouldBeMade(): void
     {
         $screenshotPattern = $this->testApplicationDir . '/' . $this->configuration['%directory%'] . '/*.png';
@@ -88,9 +80,7 @@ final class FeatureContext implements Context
         }
     }
 
-    /**
-     * @Then a screenshot should not be made
-     */
+    #[Then('a screenshot should not be made')]
     public function screenshotShouldNotBeMade(): void
     {
         $screenshotPattern = $this->testApplicationDir . '/' . $this->configuration['%directory%'] . '/*.png';
@@ -103,12 +93,14 @@ final class FeatureContext implements Context
 
     private function createBehatConfigurationFile(): void
     {
+        $configurationFile = $this->getConfigurationFileName();
+
         $behatConfiguration = strtr(
-            file_get_contents($this->testApplicationDir . '/behat.yml.dist'),
+            file_get_contents($this->testApplicationDir . '/' . $configurationFile . '.dist'),
             $this->configuration
         );
 
-        file_put_contents($this->testApplicationDir . '/behat.yml', $behatConfiguration);
+        file_put_contents($this->testApplicationDir . '/' . $configurationFile, $behatConfiguration);
     }
 
     private function getExtraConfiguration(?string $profile): array
@@ -136,8 +128,20 @@ final class FeatureContext implements Context
 
     private function deleteBehatConfigurationFile(): void
     {
-        if (file_exists($behatFile = $this->testApplicationDir . '/behat.yml')) {
+        if (file_exists($behatFile = $this->testApplicationDir . '/' . $this->getConfigurationFileName())) {
             unlink($behatFile);
         }
+    }
+
+    /**
+     * Behat 4 dropped YAML configuration support and only auto-discovers PHP configuration files,
+     * so the templated config file has to match the installed Behat version. The `Behat\Config`
+     * builder exists in Behat 3.x too, so the major version is what decides here.
+     */
+    private function getConfigurationFileName(): string
+    {
+        $behatVersion = (int) \Composer\InstalledVersions::getVersion('behat/behat');
+
+        return $behatVersion >= 4 ? 'behat.php' : 'behat.yml';
     }
 }

@@ -10,9 +10,10 @@ default:
             clean_start: %clean_start%
 
         Behat\MinkExtension:
+            base_url: 'https://sylius.com'
             sessions:
                 default:
-                    goutte: ~
+                    browserkit_http: ~
 
     gherkin:
         filters:
@@ -28,6 +29,7 @@ javascript:
         DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension: ~
 
         Behat\MinkExtension:
+            base_url: 'https://sylius.com'
             javascript_session: chrome
             sessions:
                 chrome:
