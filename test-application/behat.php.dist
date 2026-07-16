@@ -25,7 +25,7 @@ return (new Config())
                 'clean_start' => %clean_start%,
             ]))
             ->withExtension(new Extension(MinkExtension::class, [
-                'base_url' => 'https://sylius.com',
+                'base_url' => 'http://127.0.0.1:8080',
                 'sessions' => [
                     'default' => [
                         'browserkit_http' => null,
@@ -45,7 +45,7 @@ return (new Config())
             ]))
             ->withExtension(new Extension(ChromeExtension::class, []))
             ->withExtension(new Extension(MinkExtension::class, [
-                'base_url' => 'https://sylius.com',
+                'base_url' => 'http://127.0.0.1:8080',
                 'javascript_session' => 'chrome',
                 'sessions' => [
                     'chrome' => [
