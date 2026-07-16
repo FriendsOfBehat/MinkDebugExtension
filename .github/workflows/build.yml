@@ -32,7 +32,7 @@ jobs:
                   tools: composer:v2
 
             - name: Run Chrome Headless
-              run: google-chrome-stable --enable-automation --disable-background-networking --no-default-browser-check --no-first-run --disable-popup-blocking --disable-default-apps --allow-insecure-localhost --disable-translate --disable-extensions --no-sandbox --enable-features=Metal --headless --remote-debugging-port=9222 --window-size=2880,1800 --proxy-server='direct://' --proxy-bypass-list='*' http://127.0.0.1 > /dev/null 2>&1 &
+              run: google-chrome-stable --enable-automation --disable-background-networking --no-default-browser-check --no-first-run --disable-popup-blocking --disable-default-apps --allow-insecure-localhost --disable-translate --disable-extensions --no-sandbox --enable-features=Metal --headless=new --remote-debugging-port=9222 --window-size=2880,1800 --proxy-server='direct://' --proxy-bypass-list='*' http://127.0.0.1 > "${{ runner.temp }}/chrome.log" 2>&1 &
 
             - name: Get Composer cache directory
               id: composer-cache
@@ -51,6 +51,17 @@ jobs:
 
             - name: Validate composer.json
               run: composer validate --ansi --strict
+
+            - name: Wait for Chrome DevTools
+              run: |
+                  for i in $(seq 1 30); do
+                      if curl -sf http://127.0.0.1:9222/json/version > /dev/null; then
+                          echo "Chrome DevTools is up"; exit 0
+                      fi
+                      sleep 1
+                  done
+                  echo "Chrome DevTools did not become ready"; cat "${{ runner.temp }}/chrome.log" || true
+                  exit 1
 
             - name: Run Behat
               run: vendor/bin/behat --colors --strict --no-interaction -vvv -f progress
@@ -83,7 +94,7 @@ jobs:
                   tools: composer:v2
 
             - name: Run Chrome Headless
-              run: google-chrome-stable --enable-automation --disable-background-networking --no-default-browser-check --no-first-run --disable-popup-blocking --disable-default-apps --allow-insecure-localhost --disable-translate --disable-extensions --no-sandbox --enable-features=Metal --headless --remote-debugging-port=9222 --window-size=2880,1800 --proxy-server='direct://' --proxy-bypass-list='*' http://127.0.0.1 > /dev/null 2>&1 &
+              run: google-chrome-stable --enable-automation --disable-background-networking --no-default-browser-check --no-first-run --disable-popup-blocking --disable-default-apps --allow-insecure-localhost --disable-translate --disable-extensions --no-sandbox --enable-features=Metal --headless=new --remote-debugging-port=9222 --window-size=2880,1800 --proxy-server='direct://' --proxy-bypass-list='*' http://127.0.0.1 > "${{ runner.temp }}/chrome.log" 2>&1 &
 
             - name: Get Composer cache directory
               id: composer-cache
@@ -99,6 +110,17 @@ jobs:
 
             - name: Install PHP dependencies (Behat 4)
               run: composer require behat/behat:"^4.0@alpha" friends-of-behat/mink-extension:"^3.0@alpha" --with-all-dependencies --no-interaction
+
+            - name: Wait for Chrome DevTools
+              run: |
+                  for i in $(seq 1 30); do
+                      if curl -sf http://127.0.0.1:9222/json/version > /dev/null; then
+                          echo "Chrome DevTools is up"; exit 0
+                      fi
+                      sleep 1
+                  done
+                  echo "Chrome DevTools did not become ready"; cat "${{ runner.temp }}/chrome.log" || true
+                  exit 1
 
             - name: Run Behat
               run: vendor/bin/behat --colors --strict --no-interaction -vvv -f progress
