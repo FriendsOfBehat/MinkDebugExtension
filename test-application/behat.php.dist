@@ -1,0 +1,64 @@
+<?php
+
+declare(strict_types=1);
+
+use Behat\Config\Config;
+use Behat\Config\Extension;
+use Behat\Config\Filter\TagFilter;
+use Behat\Config\GherkinOptions;
+use Behat\Config\Profile;
+use Behat\Config\Suite;
+use Behat\MinkExtension\Context\MinkContext;
+use Behat\MinkExtension\ServiceContainer\MinkExtension;
+use DMore\ChromeExtension\Behat\ServiceContainer\ChromeExtension;
+use FriendsOfBehat\MinkDebugExtension\ServiceContainer\MinkDebugExtension;
+
+return (new Config())
+    ->withProfile(
+        (new Profile('default'))
+            ->withSuite(
+                (new Suite('default'))
+                    ->withContexts(MinkContext::class)
+            )
+            ->withExtension(new Extension(MinkDebugExtension::class, [
+                'directory' => '%directory%',
+                'clean_start' => %clean_start%,
+            ]))
+            ->withExtension(new Extension(MinkExtension::class, [
+                'base_url' => 'http://127.0.0.1:8080',
+                'sessions' => [
+                    'default' => [
+                        'browserkit_http' => null,
+                    ],
+                ],
+            ]))
+            ->withGherkinOptions(
+                (new GherkinOptions())->withFilter(new TagFilter('~@javascript'))
+            )
+    )
+    ->withProfile(
+        (new Profile('javascript'))
+            ->withExtension(new Extension(MinkDebugExtension::class, [
+                'directory' => '%directory%',
+                'screenshot' => %screenshot%,
+                'clean_start' => %clean_start%,
+            ]))
+            ->withExtension(new Extension(ChromeExtension::class, []))
+            ->withExtension(new Extension(MinkExtension::class, [
+                'base_url' => 'http://127.0.0.1:8080',
+                'javascript_session' => 'chrome',
+                'sessions' => [
+                    'chrome' => [
+                        'chrome' => [
+                            'api_url' => 'http://127.0.0.1:9222',
+                            'validate_certificate' => false,
+                        ],
+                    ],
+                ],
+                'show_auto' => false,
+            ]))
+            ->withGherkinOptions(
+                (new GherkinOptions())->withFilter(new TagFilter('@javascript'))
+            )
+    )
+;
